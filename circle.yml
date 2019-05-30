@@ -1,0 +1,14 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: byuoitav/build-env:master
+
+        working_directory: /go/src/github.com/byuoitav/atlona-switch-microservice
+
+        steps:
+            - checkout
+            - setup_remote_docker
+            - run: make deps
+            - run: make build
+            - run: make docker
