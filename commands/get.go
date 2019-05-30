@@ -38,7 +38,7 @@ func GetInput(address, output string) (string, error) {
 				return err
 			}
 			s := fmt.Sprintf("%s", n)
-			if strings.Contains(s, "Routing Information for Output Card at Slot "+output+"\n") {
+			if strings.Contains(s, "Routing Information for Output Card at Slot "+output) {
 				for {
 					n, err = conn.ReadUntil(LINE_FEED, 5*time.Second)
 					if err != nil {
