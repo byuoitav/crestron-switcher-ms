@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/byuoitav/common/log"
 	"github.com/byuoitav/common/pooled"
 )
 
@@ -14,17 +13,9 @@ import (
 func SwitchInput(address, output, input string) (string, error) {
 
 	work := func(conn pooled.Conn) error {
-
-		log.L.Infof("Setting output %s to %s", output, input)
-
-		// _, err := conn.Write([]byte("\n"))
-		// if err != nil {
-		// 	return err
-		// }
+		conn.Log().Infof("Setting output %s to %s", output, input)
 
 		cmd := []byte(fmt.Sprintf("setAVroute %s %s\r\n", input, output))
-
-		// send command
 		_, err := conn.Write(cmd)
 		if err != nil {
 			return err
@@ -37,12 +28,12 @@ func SwitchInput(address, output, input string) (string, error) {
 			return err
 		}
 
-		log.L.Infof("Response from command: %s", b)
+		conn.Log().Debugf("Response from command: %s", b)
 		if strings.Contains(string(b), "failed") {
 			return fmt.Errorf("input or output is out of range")
 		}
 
-		log.L.Infof("Set input to %s successful", input)
+		conn.Log().Infof("Set input to %s successful", input)
 		return nil
 	}
 
