@@ -18,7 +18,7 @@ func GetInput(address, output string) (string, error) {
 	work := func(conn pooled.Conn) error {
 		conn.Log().Infof("Getting the current input for output %s", output)
 
-		cmd := []byte(fmt.Sprintf("dumpdmrouteinfo\r"))
+		cmd := []byte(fmt.Sprintf("dumpdmrouteinfo\r\n"))
 		_, err := conn.Write(cmd)
 		if err != nil {
 			return err
@@ -28,8 +28,8 @@ func GetInput(address, output string) (string, error) {
 		if err != nil {
 			return err
 		}
-		var n []byte
 
+		var n []byte
 		conn.Log().Debugf("Response from command: %s", b)
 
 		for {
@@ -37,14 +37,18 @@ func GetInput(address, output string) (string, error) {
 			if err != nil {
 				return err
 			}
+
 			s := fmt.Sprintf("%s", n)
+
 			if strings.Contains(s, "Routing Information for Output Card at Slot "+output) {
 				for {
 					n, err = conn.ReadUntil(LINE_FEED, 5*time.Second)
 					if err != nil {
 						return err
 					}
+
 					s := fmt.Sprintf("%s", n)
+
 					if strings.Contains(s, "VideoSwitch") {
 						input = strings.Split(s, "->In")[1]
 						input = strings.TrimSuffix(input, "\r\n")
@@ -54,8 +58,8 @@ func GetInput(address, output string) (string, error) {
 				}
 				break
 			}
-			log.L.Debugf("Response from command: %s", n)
 		}
+
 		return nil
 	}
 
