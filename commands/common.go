@@ -10,19 +10,11 @@ import (
 )
 
 const (
-	CARRIAGE_RETURN           = 0x0D
-	LINE_FEED                 = 0x0A
-	SPACE                     = 0x20
-	DELAY_BETWEEN_CONNECTIONS = time.Second * 10
-	BIG_GATOR                 = 0x3e
+	CARRIAGE_RETURN = 0x0D
+	LINE_FEED       = 0x0A
+	SPACE           = 0x20
+	BIG_GATOR       = 0x3e
 )
-
-//var tlsConfig *tls.Config
-//var caller telnet.Caller
-
-//func init() {
-//	tlsConfig = &tls.Config{}
-//}
 
 func getConnection(key interface{}) (pooled.Conn, error) {
 	address, ok := key.(string)
