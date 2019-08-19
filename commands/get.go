@@ -9,7 +9,7 @@ import (
 	"github.com/byuoitav/common/pooled"
 )
 
-var pool = pooled.NewMap(300*time.Second, 300*time.Millisecond, getConnection)
+var pool = pooled.NewMap(45*time.Second, 300*time.Millisecond, getConnection)
 
 //GetInput .
 func GetInput(address, output string) (string, error) {
